@@ -1,0 +1,113 @@
+package by.alexkrug.database.dao;
+
+import by.alexkrug.database.connection.ConnectionManager;
+import by.alexkrug.database.entity.Student;
+import by.alexkrug.database.entity.enumtype.SysRole;
+import by.alexkrug.database.exceptions.ResultSetEmptyException;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class StudentDao implements IDao<Student, Long> {
+    Connection connection = ConnectionManager.getConnection();
+    private final static String ADD = """
+            INSERT INTO students(name, surname, password)
+            VALUES (?, ?, ?)
+            """;
+
+    private final static String GET = """
+            SELECT * FROM students WHERE student_id = ?
+            """;
+
+    private final static String DELETE = """
+            DELETE FROM students
+            WHERE student_id = ?
+            """;
+
+
+    private final static String UPDATE = """
+             UPDATE students
+             SET \s
+                 name = ?,
+                 surname = ?,
+                 password = ?
+             WHERE student_id = ?
+            \s""";
+
+    private final static String GETALL = """
+            SELECT * FROM students
+            """;
+
+    public StudentDao() throws SQLException {
+    }
+
+    @Override
+    public Student add(Student student) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, student.getName());
+            preparedStatement.setString(2, student.getSurname());
+            preparedStatement.setObject(3, student.getPassword());
+            preparedStatement.execute();
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            if (keys.next()) {
+                return new Student(student.getName(), student.getSurname(), student.getPassword(), student.getPerson_sysrole(), keys.getLong(5));
+            }
+            throw new SQLException();
+        }
+    }
+
+    @Override
+    public Student get(Long id) throws SQLException, ResultSetEmptyException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString(1);
+                String surname = resultSet.getString(2);
+                String password = resultSet.getString(3);
+                SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
+                Long student_id = resultSet.getLong(5);
+                return new Student(name, surname, password, person_sysrole, student_id);
+            } else {
+                throw new ResultSetEmptyException("Empty result set");
+            }
+        }
+
+    }
+
+    @Override
+    public boolean delete(Long id) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+            preparedStatement.setLong(1, id);
+            return preparedStatement.execute();
+        }
+    }
+
+    @Override
+    public boolean update(Student student) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+            preparedStatement.setString(1, student.getName());
+            preparedStatement.setString(2, student.getSurname());
+            preparedStatement.setString(3, student.getPassword());
+            preparedStatement.setLong(4, student.getStudent_id());
+            return preparedStatement.execute();
+        }
+
+    }
+
+    @Override
+    public List<Student> getAll() throws SQLException {
+        List<Student> studentList = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GETALL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Student student = new Student(resultSet.getLong("student_id"), resultSet.getString("name"), resultSet.getString("surname"));
+                System.out.println(student);
+                studentList.add(student);
+            }
+            return studentList;
+        }
+    }
+}
