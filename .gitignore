@@ -39,4 +39,4 @@ build/
 .DS_Store
 
 ##Properties
-src/main/resources/db.properties
+*.properties
