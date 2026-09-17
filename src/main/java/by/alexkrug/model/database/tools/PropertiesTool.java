@@ -1,4 +1,4 @@
-package by.alexkrug.database.tools;
+package by.alexkrug.model.database.tools;
 
 import java.io.IOException;
 import java.io.InputStream;

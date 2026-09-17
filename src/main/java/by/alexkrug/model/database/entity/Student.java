@@ -1,6 +1,6 @@
-package by.alexkrug.database.entity;
+package by.alexkrug.model.database.entity;
 
-import by.alexkrug.database.entity.enumtype.SysRole;
+import by.alexkrug.model.database.entity.enumtype.SysRole;
 
 public class Student {
     private Long student_id;

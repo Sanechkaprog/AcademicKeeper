@@ -1,6 +1,6 @@
-package by.alexkrug.database.entity;
+package by.alexkrug.model.database.entity;
 
-import by.alexkrug.database.entity.enumtype.SysRole;
+import by.alexkrug.model.database.entity.enumtype.SysRole;
 
 public class Teacher {
     private Long teacher_id;
@@ -13,12 +13,19 @@ public class Teacher {
         this.person_sysrole = SysRole.TEACHER;
     }
 
-    public Teacher(Long teacher_id, String name, String surname, String password) {
+    public Teacher(Long teacher_id, String name, String surname) {
         this.teacher_id = teacher_id;
         this.name = name;
         this.surname = surname;
-        this.password = password;
         this.person_sysrole = SysRole.TEACHER;
+    }
+
+    public Teacher(String name, String surname, String password, SysRole person_sysrole, Long teacher_id) {
+        this.person_sysrole = person_sysrole;
+        this.password = password;
+        this.surname = surname;
+        this.name = name;
+        this.teacher_id = teacher_id;
     }
 
     public SysRole getPerson_sysrole() {
@@ -27,10 +34,6 @@ public class Teacher {
 
     public Long getTeacher_id() {
         return teacher_id;
-    }
-
-    public void setTeacher_id(Long teacher_id) {
-        this.teacher_id = teacher_id;
     }
 
     public String getPassword() {
@@ -55,5 +58,16 @@ public class Teacher {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacher_id=" + teacher_id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
+                ", person_sysrole=" + person_sysrole +
+                '}';
     }
 }
