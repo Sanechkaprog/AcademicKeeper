@@ -1,6 +1,6 @@
-package by.alexkrug.database.connection;
+package by.alexkrug.model.database.connection;
 
-import by.alexkrug.database.tools.PropertiesTool;
+import by.alexkrug.model.database.tools.PropertiesTool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,15 +16,21 @@ public class ConnectionManager {
     private ConnectionManager() {
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection() {
         if (connection == null) {
             PropertiesTool propertiesTool = new PropertiesTool();
             Properties properties = propertiesTool.PROPERTIES;
-            connection = DriverManager.getConnection(
-                    properties.getProperty(URL),
-                    properties.getProperty(USER),
-                    properties.getProperty(PASSWORD)
-                    );
+            try {
+                connection = DriverManager.getConnection(
+                        properties.getProperty(URL),
+                        properties.getProperty(USER),
+                        properties.getProperty(PASSWORD)
+                );
+                return connection;
+
+            } catch (SQLException e) {
+                System.out.println(e.getStackTrace());
+            }
         }
         return connection;
     }
