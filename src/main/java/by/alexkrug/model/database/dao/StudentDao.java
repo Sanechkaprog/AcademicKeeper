@@ -14,8 +14,8 @@ public class StudentDao implements IDao<Student, Long> {
     public static StudentDao INSTANCE = new StudentDao();
     Connection connection = ConnectionManager.getConnection();
     private final static String ADD = """
-            INSERT INTO students(name, surname, password)
-            VALUES (?, ?, ?)
+            INSERT INTO students(name, surname, password, login)
+            VALUES (?, ?, ?, ?)
             """;
 
     private final static String GET = """
@@ -43,7 +43,7 @@ public class StudentDao implements IDao<Student, Long> {
 
     private final static String CHECKUSER = """
             SELECT * FROM students
-                     WHERE name = ? AND surname = ?
+                     WHERE login = ?
             """;
 
     private StudentDao() {
@@ -55,10 +55,11 @@ public class StudentDao implements IDao<Student, Long> {
             preparedStatement.setString(1, student.getName());
             preparedStatement.setString(2, student.getSurname());
             preparedStatement.setObject(3, student.getPassword());
+            preparedStatement.setString(4, student.getLogin());
             preparedStatement.execute();
             ResultSet keys = preparedStatement.getGeneratedKeys();
             if (keys.next()) {
-                return new Student(student.getName(), student.getSurname(), student.getPassword(), student.getPerson_sysrole(), keys.getLong(5));
+                return new Student(student.getName(), student.getSurname(), student.getPassword(), student.getPerson_sysrole(), keys.getLong(5), student.getLogin());
             }
             throw new SQLException();
         }
@@ -75,7 +76,8 @@ public class StudentDao implements IDao<Student, Long> {
                 String password = resultSet.getString(3);
                 SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
                 Long student_id = resultSet.getLong(5);
-                return new Student(name, surname, password, person_sysrole, student_id);
+                String login = resultSet.getString(6);
+                return new Student(name, surname, password, person_sysrole, student_id, login);
             } else {
                 throw new ResultSetEmptyException("Empty result set");
             }
@@ -109,19 +111,20 @@ public class StudentDao implements IDao<Student, Long> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(GETALL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Student student = new Student(resultSet.getLong("student_id"), resultSet.getString("name"), resultSet.getString("surname"));
+                Student student = new Student(resultSet.getLong("student_id"), resultSet.getString("name"), resultSet.getString("surname"), resultSet.getString("login"));
                 studentList.add(student);
             }
             return studentList;
         }
     }
 
-    public Student get(String name, String surname) throws SQLException, ResultSetEmptyException {
+    public Student get(String login) throws SQLException, ResultSetEmptyException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CHECKUSER)) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, surname);
+            preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
+                String name = resultSet.getString(1);
+                String surname = resultSet.getString(2);
                 String password = resultSet.getString(3);
                 SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
                 Long student_id = resultSet.getLong(5);
@@ -130,7 +133,8 @@ public class StudentDao implements IDao<Student, Long> {
                         surname,
                         password,
                         person_sysrole,
-                        student_id);
+                        student_id,
+                        login);
             }
             throw new ResultSetEmptyException("Empty result set");
         }

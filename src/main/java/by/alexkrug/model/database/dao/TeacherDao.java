@@ -15,8 +15,8 @@ public class TeacherDao implements IDao<Teacher, Long> {
     Connection connection = ConnectionManager.getConnection();
     public static TeacherDao INSTANCE = new TeacherDao();
     private final static String ADD = """
-            INSERT INTO teachers(name, surname, password)
-            VALUES (?, ?, ?)
+            INSERT INTO teachers(name, surname, password, login)
+            VALUES (?, ?, ?, ?)
             """;
 
     private final static String GET = """
@@ -51,10 +51,11 @@ public class TeacherDao implements IDao<Teacher, Long> {
             preparedStatement.setString(1, teacher.getName());
             preparedStatement.setString(2, teacher.getSurname());
             preparedStatement.setObject(3, teacher.getPassword());
+            preparedStatement.setObject(4, teacher.getLogin());
             preparedStatement.execute();
             ResultSet keys = preparedStatement.getGeneratedKeys();
             if (keys.next()) {
-                return new Teacher(teacher.getName(), teacher.getSurname(), teacher.getPassword(), teacher.getPerson_sysrole(), keys.getLong(5));
+                return new Teacher(teacher.getName(), teacher.getSurname(), teacher.getPassword(), teacher.getPerson_sysrole(), keys.getLong(5), teacher.getLogin());
             }
             throw new SQLException();
         }
@@ -71,7 +72,8 @@ public class TeacherDao implements IDao<Teacher, Long> {
                 String password = resultSet.getString(3);
                 SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
                 Long teacher_id = resultSet.getLong(5);
-                return new Teacher(name, surname, password, person_sysrole, teacher_id);
+                String login = resultSet.getString(6);
+                return new Teacher(name, surname, password, person_sysrole, teacher_id, login);
             } else {
                 throw new ResultSetEmptyException("Empty result set");
             }
@@ -108,7 +110,8 @@ public class TeacherDao implements IDao<Teacher, Long> {
                 Teacher teacher = new Teacher(
                         resultSet.getLong("teacher_id"),
                         resultSet.getString("name"),
-                        resultSet.getString("surname"));
+                        resultSet.getString("surname"),
+                        resultSet.getString("login"));
                 teacherList.add(teacher);
             }
             return teacherList;

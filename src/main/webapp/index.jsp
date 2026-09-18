@@ -6,10 +6,7 @@
 <body>
     <form>
         <p>
-            Name: <input name="username">
-        </p>
-        <p>
-            Surname: <input name="surname">
+            Login: <input name="username">
         </p>
         <p>
             Password: <input name="password">

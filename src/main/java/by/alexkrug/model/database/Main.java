@@ -1,12 +1,20 @@
 package by.alexkrug.model.database;
 
+import by.alexkrug.model.database.dao.StudentDao;
+import by.alexkrug.model.database.dao.TeacherDao;
+import by.alexkrug.model.database.entity.Student;
 import by.alexkrug.model.database.entity.Task;
+import by.alexkrug.model.database.entity.Teacher;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Main {
-    static void main() {
+    static void main() throws SQLException {
+        StudentDao teacherDao = StudentDao.INSTANCE;
+        teacherDao.getAll().stream().forEach(x -> System.out.println(x));
+
+
 //        try {
 //            Task task = new Task();
 //            task.setCreation_time(LocalDate.of(2000, 4, 14));
