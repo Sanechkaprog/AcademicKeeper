@@ -13,6 +13,8 @@
     Status: <input type="radio" name="status" value="student" checked /> STUDENT
     <input type="radio" name="status" value="teacher"> TEACHER
     <br><br>
+    Login: <input name="login">
+    <br><br>
     Password <input name="password">
     <br><br>
     <input type="submit" value="Submit">
