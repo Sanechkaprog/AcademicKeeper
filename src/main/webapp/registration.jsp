@@ -5,6 +5,7 @@
 </head>
 
 <body>
+
 <form action = "registration" method="POST">
     Name: <input name="username">
     <br><br>
@@ -18,6 +19,23 @@
     Password <input name="password">
     <br><br>
     <input type="submit" value="Submit">
+    <br>
+    <%
+        String error = (String) request.getAttribute("errorMessage");
+        if ("EMPTY".equals(error)) {
+
+    %>
+    <div style="color:red">Fields can`t be empty</div>
+    <%
+        }
+    %>
+    <%
+        if ("REGISTERED".equals(error)) {
+    %>
+    <div style="color:red">User has already registered</div>
+    <%
+        }
+    %>
 </form>
 </body>
 </html>

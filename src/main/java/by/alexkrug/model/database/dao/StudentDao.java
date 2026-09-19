@@ -1,9 +1,8 @@
 package by.alexkrug.model.database.dao;
 
 import by.alexkrug.model.database.connection.ConnectionManager;
-import by.alexkrug.model.database.entity.Student;
+import by.alexkrug.model.database.entity.users.Student;
 import by.alexkrug.model.database.entity.enumtype.SysRole;
-import by.alexkrug.model.database.exceptions.ResultSetEmptyException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class StudentDao implements IDao<Student, Long> {
     public static StudentDao INSTANCE = new StudentDao();
-    Connection connection = ConnectionManager.getConnection();
+    public Connection connection = ConnectionManager.getConnection();
     private final static String ADD = """
             INSERT INTO students(name, surname, password, login)
             VALUES (?, ?, ?, ?)
@@ -66,7 +65,7 @@ public class StudentDao implements IDao<Student, Long> {
     }
 
     @Override
-    public Student get(Long id) throws SQLException, ResultSetEmptyException {
+    public Student get(Long id) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,7 +78,7 @@ public class StudentDao implements IDao<Student, Long> {
                 String login = resultSet.getString(6);
                 return new Student(name, surname, password, person_sysrole, student_id, login);
             } else {
-                throw new ResultSetEmptyException("Empty result set");
+                return null;
             }
         }
 
@@ -118,7 +117,7 @@ public class StudentDao implements IDao<Student, Long> {
         }
     }
 
-    public Student get(String login) throws SQLException, ResultSetEmptyException {
+    public Student get(String login) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CHECKUSER)) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -135,8 +134,9 @@ public class StudentDao implements IDao<Student, Long> {
                         person_sysrole,
                         student_id,
                         login);
+            } else {
+                return null;
             }
-            throw new ResultSetEmptyException("Empty result set");
         }
     }
 }

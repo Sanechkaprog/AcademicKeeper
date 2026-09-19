@@ -13,6 +13,7 @@ public class ConnectionManager {
     private static final String USER = "db.user";
     private static final String PASSWORD = "db.password";
 
+
     private ConnectionManager() {
     }
 
@@ -21,6 +22,7 @@ public class ConnectionManager {
             PropertiesTool propertiesTool = new PropertiesTool();
             Properties properties = propertiesTool.PROPERTIES;
             try {
+                Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(
                         properties.getProperty(URL),
                         properties.getProperty(USER),
@@ -29,7 +31,9 @@ public class ConnectionManager {
                 return connection;
 
             } catch (SQLException e) {
-                System.out.println(e.getStackTrace());
+                System.out.println(e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
         return connection;

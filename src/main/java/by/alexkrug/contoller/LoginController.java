@@ -2,10 +2,10 @@ package by.alexkrug.contoller;
 
 import by.alexkrug.contoller.ErrorStatusType.Status;
 import by.alexkrug.contoller.exceptions.EmptyParameterException;
-import by.alexkrug.model.service.RegistrationService;
+import by.alexkrug.model.service.LoginService;
+import by.alexkrug.model.service.exceptions.ExistenceException;
 import by.alexkrug.model.service.exceptions.RegisteredException;
 import by.alexkrug.tools.PathsHandler;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,32 +13,31 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.sql.SQLException;
 
-@WebServlet("/registration")
-public class RegistrationController extends HttpServlet {
-    RegistrationService registrationService = RegistrationService.INSTANCE;
 
+@WebServlet("/")
+public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/registration.jsp").forward(req, resp);
+        req.getRequestDispatcher(PathsHandler.handle("index")).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        registrationService.setHttpServletRequest(req);
+        LoginService loginService = LoginService.INSTANCE;
+        loginService.setHttpServletRequest(req);
         try {
-            registrationService.registrate();
+            loginService.login();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ExistenceException e) {
+            req.setAttribute("errorMessage", Status.NOT_REGISTERED.toString());
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } catch (EmptyParameterException e) {
             req.setAttribute("errorMessage", Status.EMPTY.toString());
-            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
-        } catch (RegisteredException e) {
-            req.setAttribute("errorMessage", Status.REGISTERED.toString());
-            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
-
     }
+
 }
