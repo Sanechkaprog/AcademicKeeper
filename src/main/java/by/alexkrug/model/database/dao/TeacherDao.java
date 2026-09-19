@@ -2,7 +2,7 @@ package by.alexkrug.model.database.dao;
 
 
 import by.alexkrug.model.database.connection.ConnectionManager;
-import by.alexkrug.model.database.entity.Teacher;
+import by.alexkrug.model.database.entity.users.Teacher;
 import by.alexkrug.model.database.entity.enumtype.SysRole;
 import by.alexkrug.model.database.exceptions.ResultSetEmptyException;
 
@@ -40,6 +40,11 @@ public class TeacherDao implements IDao<Teacher, Long> {
 
     private final static String GETALL = """
             SELECT * FROM teachers
+            """;
+
+    private final static String CHECKUSER = """
+            SELECT * FROM teachers
+                     WHERE login = ?
             """;
 
     private TeacherDao()  {
@@ -115,6 +120,23 @@ public class TeacherDao implements IDao<Teacher, Long> {
                 teacherList.add(teacher);
             }
             return teacherList;
+        }
+    }
+
+    public Teacher get(String login) throws SQLException, ResultSetEmptyException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CHECKUSER)) {
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString(1);
+                String surname = resultSet.getString(2);
+                String password = resultSet.getString(3);
+                SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
+                Long teacher_id = resultSet.getLong(5);
+                return new Teacher(name, surname, password, person_sysrole, teacher_id, login);
+            } else {
+                return null;
+            }
         }
     }
 }
