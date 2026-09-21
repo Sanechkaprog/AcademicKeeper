@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -20,22 +22,13 @@
     <br><br>
     <input type="submit" value="Submit">
     <br>
-    <%
-        String error = (String) request.getAttribute("errorMessage");
-        if ("EMPTY".equals(error)) {
+    <c:if test="${errorMessage =='REGISTERED'}">
+        <div style="color:red">User has already registered</div>
+    </c:if>
 
-    %>
-    <div style="color:red">Fields can`t be empty</div>
-    <%
-        }
-    %>
-    <%
-        if ("REGISTERED".equals(error)) {
-    %>
-    <div style="color:red">User has already registered</div>
-    <%
-        }
-    %>
+    <c:if test="${errorMessage == 'EMPTY'}">
+        <div style="color:red">Fields can`t be empty</div>
+    </c:if>
 </form>
 </body>
 </html>
