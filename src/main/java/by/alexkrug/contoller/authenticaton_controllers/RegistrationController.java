@@ -1,6 +1,6 @@
-package by.alexkrug.contoller;
+package by.alexkrug.contoller.authenticaton_controllers;
 
-import by.alexkrug.contoller.ErrorStatusType.Status;
+import by.alexkrug.contoller.error_status_type.Status;
 import by.alexkrug.contoller.exceptions.EmptyParameterException;
 import by.alexkrug.model.service.authentication.RegistrationService;
 import by.alexkrug.model.service.exceptions.RegisteredException;
@@ -27,9 +27,6 @@ public class RegistrationController extends HttpServlet {
         registrationService.setHttpServletRequest(req);
         try {
             registrationService.registrate();
-        } catch (EmptyParameterException e) {
-            req.setAttribute("errorMessage", Status.EMPTY.toString());
-            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
         } catch (RegisteredException e) {
             req.setAttribute("errorMessage", Status.REGISTERED.toString());
             req.getRequestDispatcher("/registration.jsp").forward(req, resp);

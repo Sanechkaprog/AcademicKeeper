@@ -1,8 +1,8 @@
-package by.alexkrug.contoller.ErrorStatusType;
+package by.alexkrug.contoller.error_status_type;
 
 public enum Status {
-    EMPTY,
     REGISTERED,
-    NOT_REGISTERED
+    NOT_REGISTERED,
+    INCORRECT_PASSWORD
 }
 

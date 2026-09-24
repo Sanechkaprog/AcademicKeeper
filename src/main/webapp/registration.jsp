@@ -4,31 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet" href="/css/registration-style.css">
 </head>
 
 <body>
 
 <form action = "registration" method="POST">
-    Name: <input name="username">
-    <br><br>
-    Surname: <input name="surname">
-    <br><br>
-    Status: <input type="radio" name="status" value="student" checked /> STUDENT
-    <input type="radio" name="status" value="teacher"> TEACHER
-    <br><br>
-    Login: <input name="login">
-    <br><br>
-    Password <input name="password">
-    <br><br>
-    <input type="submit" value="Submit">
-    <br>
+    <p>
+        <label for="name">Name</label>
+        <input type="text" required id="name" name="name" pattern="[A-zA-Z]+">
+    </p>
+    <p>
+        <label for="surname">Surname</label>
+        <input type="text" required id="surname" name="surname" pattern="[A-zA-Z]+">
+    </p>
+    <p>
+        <input type="radio" name="status" value="student" checked /> STUDENT
+        <input type="radio" name="status" value="teacher"> TEACHER
+    </p>
+    <p>
+        <label for="login">Login</label>
+        <input type="text" required id="login" name="login">
+    </p>
+    <p>
+        <label for="password">Password</label>
+        <input type="password" required id="password" name="password">
+    </p>
+    <p>
+        <input type="submit" value="Submit">
+    </p>
     <c:if test="${errorMessage =='REGISTERED'}">
         <div style="color:red">User has already registered</div>
     </c:if>
 
-    <c:if test="${errorMessage == 'EMPTY'}">
-        <div style="color:red">Fields can`t be empty</div>
-    </c:if>
 </form>
 </body>
 </html>

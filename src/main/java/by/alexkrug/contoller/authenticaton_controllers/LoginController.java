@@ -1,9 +1,10 @@
-package by.alexkrug.contoller;
+package by.alexkrug.contoller.authenticaton_controllers;
 
-import by.alexkrug.contoller.ErrorStatusType.Status;
+import by.alexkrug.contoller.error_status_type.Status;
 import by.alexkrug.contoller.exceptions.EmptyParameterException;
 import by.alexkrug.model.service.authentication.LoginService;
 import by.alexkrug.model.service.exceptions.ExistenceException;
+import by.alexkrug.model.service.exceptions.IncorrectPasswordException;
 import by.alexkrug.tools.PathsHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -35,8 +36,8 @@ public class LoginController extends HttpServlet {
             req.setAttribute("errorMessage", Status.NOT_REGISTERED.toString());
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
             return;
-        } catch (EmptyParameterException e) {
-            req.setAttribute("errorMessage", Status.EMPTY.toString());
+        } catch (IncorrectPasswordException e) {
+            req.setAttribute("errorMessage", Status.INCORRECT_PASSWORD.toString());
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
             return;
         }

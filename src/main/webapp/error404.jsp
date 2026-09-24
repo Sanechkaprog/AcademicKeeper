@@ -6,10 +6,10 @@
 </head>
 <body>
     <p>
-    <h2>Error404</h2>
+    <h2>Error 404</h2>
     </p>
     <p>
-        <h2>Resour</h2>
+        <h2>Recourse is not found</h2>
     </p>
 </body>
 </html>
