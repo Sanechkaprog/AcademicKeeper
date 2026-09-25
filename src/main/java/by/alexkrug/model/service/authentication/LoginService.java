@@ -1,6 +1,7 @@
 package by.alexkrug.model.service.authentication;
 
 
+import by.alexkrug.model.database.entity.users.Teacher;
 import by.alexkrug.model.service.exceptions.ExistenceException;
 import by.alexkrug.model.service.exceptions.IncorrectPasswordException;
 
@@ -32,10 +33,11 @@ public class LoginService extends AbstractAuthentication{
         String password = params.get("password");
         String login = params.get("login");
         String status = params.get("status");
+
         if (
-                (!teacherDao.get(login).getPassword().equals(password) && status.equals("teacher"))
+                (status.equals("teacher") && !teacherDao.get(login).getPassword().equals(password))
                         ||
-                        (!studentDao.get(login).getPassword().equals(password) && status.equals("student"))
+                        (status.equals("student") && !studentDao.get(login).getPassword().equals(password))
         ) {
             return false;
         }

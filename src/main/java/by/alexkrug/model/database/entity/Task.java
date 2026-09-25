@@ -6,8 +6,8 @@ import java.time.LocalDate;
 
 public class Task {
     private Long task_id;
-    private Long student_id;
-    private Long teacher_id;
+    private String student_login;
+    private String teacher_login;
     private StatusType statusType;
     private LocalDate creation_time;
 
@@ -21,13 +21,13 @@ public class Task {
 
     public Task() {}
 
-    public Task(Long task_id, Long student_id, Long teacher_id, LocalDate creation_time, LocalDate deadline, String description) {
+    public Task(Long task_id, LocalDate creation_time, LocalDate deadline, String description, String student_login, String teacher_login) {
         this.task_id = task_id;
-        this.student_id = student_id;
-        this.teacher_id = teacher_id;
         this.creation_time = creation_time;
         this.deadline = deadline;
         this.description = description;
+        this.student_login = student_login;
+        this.teacher_login = teacher_login;
     }
 
 
@@ -35,20 +35,20 @@ public class Task {
         return task_id;
     }
 
-    public Long getStudent_id() {
-        return student_id;
+    public String getStudent_login() {
+        return student_login;
     }
 
-    public void setStudent_id(Long student_id) {
-        this.student_id = student_id;
+    public void setStudent_login(String student_login) {
+        this.student_login = student_login;
     }
 
-    public Long getTeacher_id() {
-        return teacher_id;
+    public String getTeacher_login() {
+        return teacher_login;
     }
 
-    public void setTeacher_id(Long teacher_id) {
-        this.teacher_id = teacher_id;
+    public void setTeacher_login(String teacher_login) {
+        this.teacher_login = teacher_login;
     }
 
     public StatusType getStatusType() {
@@ -91,8 +91,6 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "task_id=" + task_id +
-                ", student_id=" + student_id +
-                ", teacher_id=" + teacher_id +
                 ", statusType=" + statusType +
                 ", creation_time=" + creation_time +
                 ", description='" + description + '\'' +

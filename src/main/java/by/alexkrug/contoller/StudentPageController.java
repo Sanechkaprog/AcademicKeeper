@@ -12,6 +12,9 @@ import java.io.IOException;
 public class StudentPageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/student-page.jsp").forward(req, resp);
+
     }
+
+
 }

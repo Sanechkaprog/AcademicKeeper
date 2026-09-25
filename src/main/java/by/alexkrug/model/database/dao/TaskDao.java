@@ -7,12 +7,13 @@ import by.alexkrug.model.database.exceptions.ResultSetEmptyException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TaskDao implements IDao<Task, Long> {
     Connection connection = ConnectionManager.getConnection();
     public static TaskDao INSTANCE = new TaskDao();
     private final static String ADD = """
-            INSERT INTO tasks(status, creation_time, deadline, student_id, teacher_id, description)
+            INSERT INTO tasks(status, creation_time, deadline, description, student_login, teacher_login)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
 
@@ -39,6 +40,7 @@ public class TaskDao implements IDao<Task, Long> {
             """;
 
 
+
     private TaskDao()  {
     }
 
@@ -49,20 +51,20 @@ public class TaskDao implements IDao<Task, Long> {
             preparedStatement.setObject(1, o.getStatusType().name(), java.sql.Types.OTHER);
             preparedStatement.setObject(2, o.getCreation_time());
             preparedStatement.setObject(3, o.getDeadline());
-            preparedStatement.setLong(4, o.getStudent_id());
-            preparedStatement.setLong(5, o.getTeacher_id());
-            preparedStatement.setString(6, o.getDescription());
+            preparedStatement.setString(4, o.getDescription());
+            preparedStatement.setString(5, o.getStudent_login());
+            preparedStatement.setString(6, o.getTeacher_login());
             preparedStatement.execute();
             ResultSet keys = preparedStatement.getGeneratedKeys();
 
             if (keys.next()) {
                 return new Task(
                         keys.getLong(7),
-                        o.getStudent_id(),
-                        o.getTeacher_id(),
                         o.getCreation_time(),
                         o.getDeadline(),
-                        o.getDescription()
+                        o.getDescription(),
+                        o.getStudent_login(),
+                        o.getTeacher_login()
                 );
             }
             throw new SQLException();
@@ -76,11 +78,11 @@ public class TaskDao implements IDao<Task, Long> {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new Task(
-                        resultSet.getLong(7),
-                        resultSet.getLong(4),
                         resultSet.getLong(5),
                         resultSet.getDate(2).toLocalDate(),
                         resultSet.getDate(3).toLocalDate(),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
                         resultSet.getString(6)
                 );
             }
@@ -109,21 +111,6 @@ public class TaskDao implements IDao<Task, Long> {
 
     @Override
     public List<Task> getAll() throws SQLException {
-        List<Task> tasks = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GETALL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Task task = new Task(
-                        resultSet.getLong(7),
-                        resultSet.getLong(4),
-                        resultSet.getLong(5),
-                        resultSet.getDate(2).toLocalDate(),
-                        resultSet.getDate(3).toLocalDate(),
-                        resultSet.getString(6)
-                );
-                tasks.add(task);
-            }
-            return tasks;
-        }
+        return List.of();
     }
 }

@@ -35,7 +35,7 @@ public class RegistrationService extends AbstractAuthentication{
     }
 
     private void pushToDataBase(User user, Map<String, String> params) throws SQLException {
-        String name = params.get("username");
+        String name = params.get("name");
         String surname = params.get("surname");
         String login = params.get("login");
         String password = params.get("password");

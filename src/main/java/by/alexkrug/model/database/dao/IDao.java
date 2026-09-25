@@ -8,11 +8,11 @@ import java.util.List;
 public interface IDao<T, I> {
     T add(T o) throws SQLException;
 
-    T get(I id) throws SQLException, ResultSetEmptyException;
+    T get(I param) throws SQLException, ResultSetEmptyException;
 
-    boolean delete(I id) throws SQLException;
+    boolean delete(I param) throws SQLException;
 
-    boolean update(T id) throws SQLException;
+    boolean update(T o) throws SQLException;
 
     List<T> getAll() throws SQLException;
 

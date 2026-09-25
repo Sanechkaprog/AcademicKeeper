@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TeacherDao implements IDao<Teacher, Long> {
+public class TeacherDao implements IDao<Teacher, String> {
     Connection connection = ConnectionManager.getConnection();
     public static TeacherDao INSTANCE = new TeacherDao();
     private final static String ADD = """
@@ -20,12 +20,12 @@ public class TeacherDao implements IDao<Teacher, Long> {
             """;
 
     private final static String GET = """
-            SELECT * FROM teachers WHERE teacher_id = ?
+            SELECT * FROM teachers WHERE login = ?
             """;
 
     private final static String DELETE = """
             DELETE FROM teachers
-            WHERE teacher_id = ?
+            WHERE login = ?
             """;
 
 
@@ -35,16 +35,11 @@ public class TeacherDao implements IDao<Teacher, Long> {
                  name = ?,
                  surname = ?,
                  password = ?
-             WHERE teacher_id = ?
+             WHERE login = ?
             \s""";
 
     private final static String GETALL = """
             SELECT * FROM teachers
-            """;
-
-    private final static String CHECKUSER = """
-            SELECT * FROM teachers
-                     WHERE login = ?
             """;
 
     private TeacherDao()  {
@@ -59,37 +54,32 @@ public class TeacherDao implements IDao<Teacher, Long> {
             preparedStatement.setObject(4, teacher.getLogin());
             preparedStatement.execute();
             ResultSet keys = preparedStatement.getGeneratedKeys();
-            if (keys.next()) {
-                return new Teacher(teacher.getName(), teacher.getSurname(), teacher.getPassword(), teacher.getPerson_sysrole(), keys.getLong(5), teacher.getLogin());
-            }
-            throw new SQLException();
+            return teacher;
         }
     }
 
     @Override
-    public Teacher get(Long id) throws SQLException, ResultSetEmptyException {
+    public Teacher get(String login) throws SQLException, ResultSetEmptyException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET)) {
-            preparedStatement.setLong(1, id);
+            preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString(1);
                 String surname = resultSet.getString(2);
                 String password = resultSet.getString(3);
-                SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
-                Long teacher_id = resultSet.getLong(5);
-                String login = resultSet.getString(6);
-                return new Teacher(name, surname, password, person_sysrole, teacher_id, login);
+                String teacher_login = resultSet.getString(5);
+                return new Teacher(name, surname, password, teacher_login);
             } else {
-                throw new ResultSetEmptyException("Empty result set");
+                return null;
             }
         }
 
     }
 
     @Override
-    public boolean delete(Long id) throws SQLException {
+    public boolean delete(String param) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
-            preparedStatement.setLong(1, id);
+            preparedStatement.setString(1, param);
             return preparedStatement.execute();
         }
     }
@@ -100,7 +90,7 @@ public class TeacherDao implements IDao<Teacher, Long> {
             preparedStatement.setString(1, teacher.getName());
             preparedStatement.setString(2, teacher.getSurname());
             preparedStatement.setString(3, teacher.getPassword());
-            preparedStatement.setLong(4, teacher.getTeacher_id());
+            preparedStatement.setString(4, teacher.getLogin());
             return preparedStatement.execute();
         }
 
@@ -113,30 +103,12 @@ public class TeacherDao implements IDao<Teacher, Long> {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Teacher teacher = new Teacher(
-                        resultSet.getLong("teacher_id"),
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
                         resultSet.getString("login"));
                 teacherList.add(teacher);
             }
             return teacherList;
-        }
-    }
-
-    public Teacher get(String login) throws SQLException, ResultSetEmptyException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(CHECKUSER)) {
-            preparedStatement.setString(1, login);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String name = resultSet.getString(1);
-                String surname = resultSet.getString(2);
-                String password = resultSet.getString(3);
-                SysRole person_sysrole = SysRole.valueOf(resultSet.getString(4));
-                Long teacher_id = resultSet.getLong(5);
-                return new Teacher(name, surname, password, person_sysrole, teacher_id, login);
-            } else {
-                return null;
-            }
         }
     }
 }
