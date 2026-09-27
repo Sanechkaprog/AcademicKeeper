@@ -17,26 +17,37 @@ public class Task {
         statusType = StatusType.PROCESSING;
     }
 
-    public Task(Long task_id, String student_login, String teacher_login, StatusType statusType, LocalDate creation_time, String description, LocalDate deadline) {
+    public Task(Long task_id, String student_login, String teacher_login, StatusType statusType, String description, LocalDate deadline) {
         this.task_id = task_id;
         this.student_login = student_login;
         this.teacher_login = teacher_login;
         this.statusType = statusType;
-        this.creation_time = creation_time;
+        this.creation_time = LocalDate.now();
         this.description = description;
         this.deadline = deadline;
     }
 
 
-    public Task(Long task_id, LocalDate creation_time, LocalDate deadline, String description, String student_login, String teacher_login) {
+    public Task(Long task_id, LocalDate deadline, String description, String student_login, String teacher_login) {
         this.task_id = task_id;
-        this.creation_time = creation_time;
         this.deadline = deadline;
         this.description = description;
+        this.creation_time = LocalDate.now();
         this.student_login = student_login;
         this.teacher_login = teacher_login;
         statusType = StatusType.PROCESSING;
     }
+
+    public Task(LocalDate deadline, String description, String student_login, String teacher_login) {
+        this.deadline = deadline;
+        this.description = description;
+        this.creation_time = LocalDate.now();
+        this.student_login = student_login;
+        this.teacher_login = teacher_login;
+        statusType = StatusType.PROCESSING;
+    }
+
+
 
 
     public Long getTask_id() {
@@ -65,10 +76,6 @@ public class Task {
 
     public LocalDate getCreation_time() {
         return creation_time;
-    }
-
-    public void setCreation_time(LocalDate creation_time) {
-        this.creation_time = creation_time;
     }
 
     public LocalDate getDeadline() {

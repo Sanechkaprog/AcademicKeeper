@@ -1,4 +1,4 @@
-package by.alexkrug.contoller;
+package by.alexkrug.contoller.redirectors;
 
 
 import jakarta.servlet.ServletException;
@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/diary")
-public class RedirectController extends HttpServlet {
+public class RedirectStatusController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();

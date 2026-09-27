@@ -25,15 +25,4 @@ public class Teacher extends User {
         return person_sysrole;
     }
 
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                ", name='" + getName() + '\'' +
-                ", surname='" + getSurname() + '\'' +
-                ", password='" + getPassword() + '\'' +
-                ", person_sysrole=" + person_sysrole +
-                ", login='" + getLogin() + '\'' +
-                '}';
-    }
 }

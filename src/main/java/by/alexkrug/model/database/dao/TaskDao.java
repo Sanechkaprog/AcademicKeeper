@@ -57,7 +57,6 @@ public class TaskDao implements IDao<Task, Long> {
             if (keys.next()) {
                 return new Task(
                         keys.getLong(5),
-                        o.getCreation_time(),
                         o.getDeadline(),
                         o.getDescription(),
                         o.getStudent_login(),
@@ -133,7 +132,6 @@ public class TaskDao implements IDao<Task, Long> {
                     student_login,
                     teacher_login,
                     StatusType.valueOf(status),
-                    creation_time,
                     description,
                     deadline
             );

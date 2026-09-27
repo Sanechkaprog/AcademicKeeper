@@ -28,14 +28,4 @@ public class Student extends User {
     }
 
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "name='" + getName() + '\'' +
-                ", surname='" + getSurname() + '\'' +
-                ", password='" + getPassword() + '\'' +
-                ", person_sysrole=" + person_sysrole +
-                ", login='" + getLogin() + '\'' +
-                '}';
-    }
 }

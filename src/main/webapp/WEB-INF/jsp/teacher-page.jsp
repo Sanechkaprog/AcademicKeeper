@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: alexk
@@ -13,6 +14,20 @@
 </head>
 <body>
     <h2>Students</h2>
+    <form action="taskred" method="POST">
+        <ul>
+            <c:forEach var="student" items="${requestScope.students}">
+                <li><c:out value="${student.person_sysrole}" /><button name="onButton" value="${student.login}">Create task</button></li>
+                <c:out value="Login: ${student.login}" />
+                <br>
+                <c:out value="Name: ${student.name}" />
+                <br>
+                <c:out value="Surname ${student.surname}" />
+                <br><br>
+            </c:forEach>
+        </ul>
+    </form>
+
 
 </body>
 </html>
