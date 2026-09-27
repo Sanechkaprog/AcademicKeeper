@@ -1,0 +1,5 @@
+.btn-success::before {
+    content: "✓ ";
+    color: #28a745;
+    font-weight: bold;
+}

@@ -10,16 +10,23 @@ public class Task {
     private String teacher_login;
     private StatusType statusType;
     private LocalDate creation_time;
+    private String description;
+    private LocalDate deadline;
 
-    {
+    public Task() {
         statusType = StatusType.PROCESSING;
     }
 
-    private String description;
+    public Task(Long task_id, String student_login, String teacher_login, StatusType statusType, LocalDate creation_time, String description, LocalDate deadline) {
+        this.task_id = task_id;
+        this.student_login = student_login;
+        this.teacher_login = teacher_login;
+        this.statusType = statusType;
+        this.creation_time = creation_time;
+        this.description = description;
+        this.deadline = deadline;
+    }
 
-    private LocalDate deadline;
-
-    public Task() {}
 
     public Task(Long task_id, LocalDate creation_time, LocalDate deadline, String description, String student_login, String teacher_login) {
         this.task_id = task_id;
@@ -28,6 +35,7 @@ public class Task {
         this.description = description;
         this.student_login = student_login;
         this.teacher_login = teacher_login;
+        statusType = StatusType.PROCESSING;
     }
 
 
@@ -55,10 +63,6 @@ public class Task {
         return statusType;
     }
 
-    public void setStatusType(StatusType statusType) {
-        this.statusType = statusType;
-    }
-
     public LocalDate getCreation_time() {
         return creation_time;
     }
@@ -83,18 +87,20 @@ public class Task {
         this.description = description;
     }
 
-    public void setTask_id(Long task_id) {
-        this.task_id = task_id;
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "task_id=" + task_id +
-                ", statusType=" + statusType +
-                ", creation_time=" + creation_time +
-                ", description='" + description + '\'' +
-                ", deadline=" + deadline +
-                '}';
+        return
+                "task_id=" + task_id + "\n\n" +
+                ", student_login='" + student_login + '\'' + "\n" +
+                ", teacher_login='" + teacher_login + '\'' + "\n" +
+                ", statusType=" + statusType + "\n" +
+                ", creation_time=" + creation_time + "\n" +
+                ", description='" + description + '\'' + "\n" +
+                ", deadline=" + deadline + "\n"
+                ;
     }
 }
