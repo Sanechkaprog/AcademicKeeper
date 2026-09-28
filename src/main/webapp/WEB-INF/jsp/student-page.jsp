@@ -11,29 +11,28 @@
 <html>
 <head>
     <title>Student</title>
-    <link rel="stylesheet" href="/css/student-page.css">
+    <link rel="stylesheet" href="/css/student-pagev2.css">
 </head>
 <body>
     <h2>
         Tasks
     </h2>
     <form action="student" method="POST">
-        <ul>
-            <c:forEach var="item" items="${requestScope.tasks}">
-                <li><c:out value="Task №${item.task_id}" /> <button class="btn-success" name="onButton" value="${item.task_id}"> </button></li>
-                <c:out value="Creation time: ${item.creation_time}" />
-                <br>
-                <c:out value="Deadline: ${item.deadline}" />
-                <br>
-                <c:out value="From: ${item.teacher_login}" />
-                <br>
-                <c:out value="Description: ${item.description}" />
-                <br>
-                <c:out value="Status: ${item.statusType}" />
-                <br><br>
-            </c:forEach>
-        </ul>
+        <c:forEach var="item" items="${requestScope.tasks}">
+            <li class="task-card">
+                <div class="task-header">
+                    <span class="task-title">Task №${item.task_id}</span>
+                    <button class="btn-success" name="onButton" value="${item.task_id}"></button>
+                </div>
+                <div class="task-body">
+                    <p><span class="label">Creation time:</span> ${item.creation_time}</p>
+                    <p><span class="label">Deadline:</span> ${item.deadline}</p>
+                    <p><span class="label">From:</span> ${item.teacher_login}</p>
+                    <p><span class="label">Description:</span> ${item.description}</p>
+                    <p><span class="label">Status:</span> ${item.statusType}</p>
+                </div>
+            </li>
+        </c:forEach>
     </form>
-
 </body>
 </html>

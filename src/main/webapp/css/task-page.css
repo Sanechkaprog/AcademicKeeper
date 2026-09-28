@@ -1,0 +1,180 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #eef2f7 0%, #dfe9f3 100%);
+    color: #2c3e50;
+    min-height: 100vh;
+    padding: 40px 20px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+    border-radius: 2px;
+}
+
+
+.task-form {
+    width: 100%;
+    max-width: 560px;
+    background: linear-gradient(135deg, #3498db 0%, #2c6fb5 100%);
+    color: #ffffff;
+    padding: 32px 36px 36px;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(52, 152, 219, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+
+.task-form::after {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 180px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+
+.field {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.field label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #eaf3fb;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+
+.field textarea,
+.field input[type="date"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2c3e50;
+    font-size: 0.98rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.5;
+}
+
+.field textarea:focus,
+.field input[type="date"]:focus {
+    outline: none;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25);
+}
+
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #95a5a6;
+}
+
+
+.recipient {
+    margin: 4px 0 24px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.15);
+    border-left: 4px solid #ffffff;
+    border-radius: 8px;
+    color: #eaf3fb;
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+}
+
+.recipient strong {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+
+.btn-send {
+    display: block;
+    width: 100%;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background: #ffffff;
+    color: #2c6fb5;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transition: all 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-send:hover {
+    background: #2ecc71;
+    border-color: #2ecc71;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(46, 204, 113, 0.55);
+}
+
+.btn-send:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 3px 10px rgba(46, 204, 113, 0.5);
+}
+
+.btn-send:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.6);
+    outline-offset: 3px;
+}
+
+
+@media (max-width: 600px) {
+    body { padding: 20px 10px; }
+    h2 { font-size: 1.6rem; }
+    .task-form { padding: 24px 20px 28px; }
+    .field textarea { min-height: 110px; }
+    .btn-send { padding: 12px 20px; font-size: 0.95rem; }
+}
