@@ -6,65 +6,76 @@ import java.time.LocalDate;
 
 public class Task {
     private Long task_id;
-    private Long student_id;
-    private Long teacher_id;
+    private String student_login;
+    private String teacher_login;
     private StatusType statusType;
     private LocalDate creation_time;
+    private String description;
+    private LocalDate deadline;
 
-    {
+    public Task() {
         statusType = StatusType.PROCESSING;
     }
 
-    private String description;
-
-    private LocalDate deadline;
-
-    public Task() {}
-
-    public Task(Long task_id, Long student_id, Long teacher_id, LocalDate creation_time, LocalDate deadline, String description) {
+    public Task(Long task_id, String student_login, String teacher_login, StatusType statusType, String description, LocalDate deadline) {
         this.task_id = task_id;
-        this.student_id = student_id;
-        this.teacher_id = teacher_id;
-        this.creation_time = creation_time;
+        this.student_login = student_login;
+        this.teacher_login = teacher_login;
+        this.statusType = statusType;
+        this.creation_time = LocalDate.now();
+        this.description = description;
+        this.deadline = deadline;
+    }
+
+
+    public Task(Long task_id, LocalDate deadline, String description, String student_login, String teacher_login) {
+        this.task_id = task_id;
         this.deadline = deadline;
         this.description = description;
+        this.creation_time = LocalDate.now();
+        this.student_login = student_login;
+        this.teacher_login = teacher_login;
+        statusType = StatusType.PROCESSING;
     }
+
+    public Task(LocalDate deadline, String description, String student_login, String teacher_login) {
+        this.deadline = deadline;
+        this.description = description;
+        this.creation_time = LocalDate.now();
+        this.student_login = student_login;
+        this.teacher_login = teacher_login;
+        statusType = StatusType.PROCESSING;
+    }
+
+
 
 
     public Long getTask_id() {
         return task_id;
     }
 
-    public Long getStudent_id() {
-        return student_id;
+    public String getStudent_login() {
+        return student_login;
     }
 
-    public void setStudent_id(Long student_id) {
-        this.student_id = student_id;
+    public void setStudent_login(String student_login) {
+        this.student_login = student_login;
     }
 
-    public Long getTeacher_id() {
-        return teacher_id;
+    public String getTeacher_login() {
+        return teacher_login;
     }
 
-    public void setTeacher_id(Long teacher_id) {
-        this.teacher_id = teacher_id;
+    public void setTeacher_login(String teacher_login) {
+        this.teacher_login = teacher_login;
     }
 
     public StatusType getStatusType() {
         return statusType;
     }
 
-    public void setStatusType(StatusType statusType) {
-        this.statusType = statusType;
-    }
-
     public LocalDate getCreation_time() {
         return creation_time;
-    }
-
-    public void setCreation_time(LocalDate creation_time) {
-        this.creation_time = creation_time;
     }
 
     public LocalDate getDeadline() {
@@ -83,20 +94,20 @@ public class Task {
         this.description = description;
     }
 
-    public void setTask_id(Long task_id) {
-        this.task_id = task_id;
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "task_id=" + task_id +
-                ", student_id=" + student_id +
-                ", teacher_id=" + teacher_id +
-                ", statusType=" + statusType +
-                ", creation_time=" + creation_time +
-                ", description='" + description + '\'' +
-                ", deadline=" + deadline +
-                '}';
+        return
+                "task_id=" + task_id + "\n\n" +
+                ", student_login='" + student_login + '\'' + "\n" +
+                ", teacher_login='" + teacher_login + '\'' + "\n" +
+                ", statusType=" + statusType + "\n" +
+                ", creation_time=" + creation_time + "\n" +
+                ", description='" + description + '\'' + "\n" +
+                ", deadline=" + deadline + "\n"
+                ;
     }
 }

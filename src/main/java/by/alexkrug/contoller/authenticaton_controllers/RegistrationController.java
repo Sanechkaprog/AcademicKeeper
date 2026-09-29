@@ -1,11 +1,9 @@
-package by.alexkrug.contoller;
+package by.alexkrug.contoller.authenticaton_controllers;
 
-import by.alexkrug.contoller.ErrorStatusType.Status;
+import by.alexkrug.contoller.error_status_type.Status;
 import by.alexkrug.contoller.exceptions.EmptyParameterException;
-import by.alexkrug.model.service.RegistrationService;
+import by.alexkrug.model.service.authentication.RegistrationService;
 import by.alexkrug.model.service.exceptions.RegisteredException;
-import by.alexkrug.tools.PathsHandler;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.sql.SQLException;
 
 @WebServlet("/registration")
@@ -30,9 +27,6 @@ public class RegistrationController extends HttpServlet {
         registrationService.setHttpServletRequest(req);
         try {
             registrationService.registrate();
-        } catch (EmptyParameterException e) {
-            req.setAttribute("errorMessage", Status.EMPTY.toString());
-            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
         } catch (RegisteredException e) {
             req.setAttribute("errorMessage", Status.REGISTERED.toString());
             req.getRequestDispatcher("/registration.jsp").forward(req, resp);

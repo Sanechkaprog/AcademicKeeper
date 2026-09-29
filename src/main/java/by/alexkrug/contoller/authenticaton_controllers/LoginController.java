@@ -1,22 +1,23 @@
-package by.alexkrug.contoller;
+package by.alexkrug.contoller.authenticaton_controllers;
 
-import by.alexkrug.contoller.ErrorStatusType.Status;
+import by.alexkrug.contoller.error_status_type.Status;
 import by.alexkrug.contoller.exceptions.EmptyParameterException;
-import by.alexkrug.model.service.LoginService;
+import by.alexkrug.model.service.authentication.LoginService;
 import by.alexkrug.model.service.exceptions.ExistenceException;
-import by.alexkrug.model.service.exceptions.RegisteredException;
+import by.alexkrug.model.service.exceptions.IncorrectPasswordException;
 import by.alexkrug.tools.PathsHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 
-@WebServlet("/")
+@WebServlet("/index")
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,10 +35,18 @@ public class LoginController extends HttpServlet {
         } catch (ExistenceException e) {
             req.setAttribute("errorMessage", Status.NOT_REGISTERED.toString());
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
-        } catch (EmptyParameterException e) {
-            req.setAttribute("errorMessage", Status.EMPTY.toString());
+            return;
+        } catch (IncorrectPasswordException e) {
+            req.setAttribute("errorMessage", Status.INCORRECT_PASSWORD.toString());
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            return;
         }
+        HttpSession httpSession = req.getSession();
+        httpSession.setAttribute("login", req.getParameter("login"));
+        httpSession.setAttribute("status", req.getParameter("status"));
+        resp.sendRedirect("/diary");
+
     }
+
 
 }
